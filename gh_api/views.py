@@ -16,12 +16,13 @@ def test(request):
 
 # github api # https://developer.github.com/v3/
 
-def user_repos(request, username):
+def user_repos(request, username = "nickbouldien"):
     if request.method != 'GET':
         return HttpResponseNotAllowed(['GET'])
 
     url = 'https://api.github.com/users/' + username + '/repos'
-    r = requests.get(url)
+    headers = {'Accept': 'application/vnd.github.v3+json'}
+    r = requests.get(url, headers = headers)
     print(r.status_code)
 
     return JsonResponse(r.json(), safe=False)
@@ -37,7 +38,9 @@ def user(request, username = "nickbouldien"):
     render_json = True if json_param == "true" or json_param == "1" else False
 
     url = 'https://api.github.com/users/' + username
-    r = requests.get(url)
+
+    headers = {'Accept': 'application/vnd.github.v3+json'}
+    r = requests.get(url, headers = headers)
     print(r.status_code)
 
     return JsonResponse(r.json())
