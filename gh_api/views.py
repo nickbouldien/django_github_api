@@ -73,6 +73,10 @@ def user(request, username = "nickbouldien"):
 
     user = {'user': user_data}
 
+    if save_data:
+        created_user = User.objects.create(**user_data);
+        print("created_user: ", created_user)
+
     if render_json:
         return JsonResponse(user)
     
