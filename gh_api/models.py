@@ -12,7 +12,8 @@ class User(models.Model):
     name = models.CharField(max_length = 50)
     public_gists = models.IntegerField(default = 0)
     public_repos = models.IntegerField(default = 0)
-    url = models.CharField(max_length = 50)
+    api_url = models.CharField(max_length = 50)
+    html_url = models.CharField(max_length = 50, default = "")
     account_created_at = models.DateTimeField()
     account_updated_at = models.DateTimeField()
 

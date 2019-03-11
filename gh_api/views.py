@@ -54,7 +54,7 @@ def user(request, username = "nickbouldien"):
 
     if r.status_code == requests.codes.ok:
         user_data['avatar_url'] = json_data.get('avatar_url', "")
-        user_data['blog'] = json_dataget('blog', "")
+        user_data['blog'] = json_data.get('blog', "")
         user_data['bio'] = json_data.get('bio', "")
         user_data['company'] = json_data.get('company', "")
         user_data['location'] = json_data.get('location', "")
@@ -64,7 +64,8 @@ def user(request, username = "nickbouldien"):
         user_data['name'] = json_data.get('name', "")
         user_data['public_gists'] = json_data.get('public_gists', 0)
         user_data['public_repos'] = json_data.get('public_repos', 0)
-        user_data['url'] = json_data.get('url', "")
+        user_data['api_url'] = json_data.get('api_url', "")
+        user_data['html_url'] = json_data.get('html_url', "")
         user_data['account_created_at'] = json_data.get('created_at')
         user_data['account_updated_at'] = json_data.get('updated_at')
     else:

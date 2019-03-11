@@ -1,9 +1,9 @@
-
 {% if user %}
+    <h1>{{ user.name }}</h1>
     <ul>
-        <li>name: {{ user.name }}</li>
         <li>login: {{ user.login }}</li>
-        <li>url: <a href="{{ user.url }}">{{ user.url }}</a></li>
+        <li>profile link: <a href="{{ user.html_url }}">{{ user.html_url }}</a></li>
+        <li>api url: <a href="{{ user.api_url }}">{{ user.api_url }}</a></li>
         <li>blog: {{ user.blog }}</li>
         <li>bio: {{ user.bio }}</li>
         {% if user.company %}
@@ -18,26 +18,7 @@
         <li>public_repos: {{ user.public_repos }}</li>
         <li>account_created_at: {{ user.account_created_at }}</li>
         <li>account_updated_at: {{ user.account_updated_at }}</li>
-
-    {% for question in latest_question_list %}
-        <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
-    {% endfor %}
     </ul>
 {% else %}
     <p>No user data available.</p>
 {% endif %}
-
-<!-- avatar_url = models.CharField(max_length = 50)
-blog = models.CharField(max_length = 50)
-bio = models.TextField(max_length = 200)
-company = models.CharField(max_length = 50)
-location = models.CharField(max_length = 50)
-login = models.CharField(max_length = 50)
-followers = models.IntegerField(default = 0)
-following = models.IntegerField(default = 0)
-name = models.CharField(max_length = 50)
-public_gists = models.IntegerField(default = 0)
-public_repos = models.IntegerField(default = 0)
-url = models.CharField(max_length = 50)
-account_created_at = models.DateTimeField()
-account_updated_at = models.DateTimeField() -->
