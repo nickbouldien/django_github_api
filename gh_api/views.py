@@ -12,7 +12,7 @@ import json
 def index(request):
     routes = {
         "/api/": "'help' - shows available routes",
-        "/api/ping": "est availability",
+        "/api/ping": "test availability",
         "/api/user/<github_username>/": "get github data for a given user",
         "/api/user<github_username>/repos": "get github repo data for a given user"
     }
@@ -53,20 +53,20 @@ def user(request, username = "nickbouldien"):
     user_data = {}
 
     if r.status_code == requests.codes.ok:
-        user_data['avatar_url'] = json_data['avatar_url']
-        user_data['blog'] = json_data['blog']
-        user_data['bio'] = json_data['bio']
-        user_data['company'] = json_data['company']
-        user_data['location'] = json_data['location']
-        user_data['login'] = json_data['login']
-        user_data['followers'] = json_data['followers']
-        user_data['following'] = json_data['following']
-        user_data['name'] = json_data['name']
-        user_data['public_gists'] = json_data['public_gists']
-        user_data['public_repos'] = json_data['public_repos']
-        user_data['url'] = json_data['url']
-        user_data['account_created_at'] = json_data['created_at']
-        user_data['account_updated_at'] = json_data['updated_at']
+        user_data['avatar_url'] = json_data.get('avatar_url', "")
+        user_data['blog'] = json_dataget('blog', "")
+        user_data['bio'] = json_data.get('bio', "")
+        user_data['company'] = json_data.get('company', "")
+        user_data['location'] = json_data.get('location', "")
+        user_data['login'] = json_data.get('login', "")
+        user_data['followers'] = json_data.get('followers', 0)
+        user_data['following'] = json_data.get('following', 0)
+        user_data['name'] = json_data.get('name', "")
+        user_data['public_gists'] = json_data.get('public_gists', 0)
+        user_data['public_repos'] = json_data.get('public_repos', 0)
+        user_data['url'] = json_data.get('url', "")
+        user_data['account_created_at'] = json_data.get('created_at')
+        user_data['account_updated_at'] = json_data.get('updated_at')
     else:
         return HttpResponseServerError("There was an error with the response from the github api.")
 
