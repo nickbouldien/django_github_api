@@ -20,7 +20,7 @@ class User(models.Model):
     created_date = models.DateTimeField(default=timezone.now)
 
     def __repr__(self):
-        return "User('{}', '{}', '{}')".format(self.login, self.name, self.url)
+        return "User('{}', '{}', '{}')".format(self.login, self.name, self.html_url)
 
     def __str__(self):
         return "'{}': '{}' - '{}'".format(self.id, self.login, self.name)

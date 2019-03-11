@@ -7,4 +7,5 @@ urlpatterns = [
     path('ping', views.test, name = 'test'),
     path('user/<str:username>', views.user, name = 'username'),
     path('user/<str:username>/repos', views.user_repos, name = 'username'),
+    path('user/<str:username>/trends', views.user_trends, name = 'username'),
 ]

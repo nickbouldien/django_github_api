@@ -1,3 +1,4 @@
+from django.core.serializers import serialize
 from django.shortcuts import render
 from django.http import (
     HttpResponse,
@@ -14,7 +15,7 @@ def index(request):
         "/api/": "'help' - shows available routes",
         "/api/ping": "test availability",
         "/api/user/<github_username>/": "get github data for a given user",
-        "/api/user<github_username>/repos": "get github repo data for a given user"
+        "/api/user<github_username>/repos": "get github repo data for a given user",
     }
     return JsonResponse(routes)
 
@@ -47,7 +48,6 @@ def user(request, username = "nickbouldien"):
 
     headers = {'Accept': 'application/vnd.github.v3+json'}
     r = requests.get(url, headers = headers)
-    print(r.status_code)
 
     json_data = r.json()
     user_data = {}
@@ -64,7 +64,7 @@ def user(request, username = "nickbouldien"):
         user_data['name'] = json_data.get('name', "")
         user_data['public_gists'] = json_data.get('public_gists', 0)
         user_data['public_repos'] = json_data.get('public_repos', 0)
-        user_data['api_url'] = json_data.get('api_url', "")
+        user_data['api_url'] = json_data.get('url', "")
         user_data['html_url'] = json_data.get('html_url', "")
         user_data['account_created_at'] = json_data.get('created_at')
         user_data['account_updated_at'] = json_data.get('updated_at')
@@ -81,3 +81,26 @@ def user(request, username = "nickbouldien"):
         return JsonResponse(user)
     
     return render(request, 'gh_api/user.html', user)
+
+def user_trends(request, username = "nickbouldien"):
+    amount_param = request.GET.get('amount', 10)
+
+    json_res = []
+
+    user_entries = User.objects.filter(login = username).order_by('-id')[:int(amount_param)]
+    for entry in user_entries:
+        json_obj = dict(
+            id = entry.id,
+            company = entry.company,
+            location = entry.location,
+            login = entry.login,
+            followers = entry.followers,
+            following = entry.following,
+            public_gists = entry.public_gists,
+            public_repos = entry.public_repos,
+            created_date = entry.created_date,
+            account_updated_at = entry.account_updated_at,
+        )
+        json_res.append(json_obj)
+
+    return JsonResponse(json_res, safe = False)
