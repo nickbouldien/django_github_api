@@ -1,5 +1,10 @@
 from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse, HttpResponseNotAllowed
+from django.http import (
+    HttpResponse,
+    JsonResponse,
+    HttpResponseNotAllowed,
+    HttpResponseServerError,
+)
 from .models import User
 import requests
 import json
@@ -63,8 +68,7 @@ def user(request, username = "nickbouldien"):
         user_data['account_created_at'] = json_data['created_at']
         user_data['account_updated_at'] = json_data['updated_at']
     else:
-        # return bad status
-        pass
+        return HttpResponseServerError("There was an error with the response from the github api.")
 
     user = {'user': user_data}
 
