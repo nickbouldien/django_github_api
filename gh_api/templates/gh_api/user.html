@@ -1,24 +1,27 @@
 {% if user %}
-    <h1>{{ user.name }}</h1>
-    <ul>
-        <li>login: {{ user.login }}</li>
-        <li>profile link: <a href="{{ user.html_url }}">{{ user.html_url }}</a></li>
-        <li>api url: <a href="{{ user.api_url }}">{{ user.api_url }}</a></li>
-        <li>blog: {{ user.blog }}</li>
-        <li>bio: {{ user.bio }}</li>
-        {% if user.company %}
-            <li>company: {{ user.company }}</li>
-        {% endif %}
-        {% if user.location %}
-            <li>location: {{ user.location }}</li>
-        {% endif %}
-        <li>followers: {{ user.followers }}</li>
-        <li>following: {{ user.following }}</li>
-        <li>public_gists: {{ user.public_gists }}</li>
-        <li>public_repos: {{ user.public_repos }}</li>
-        <li>account_created_at: {{ user.account_created_at }}</li>
-        <li>account_updated_at: {{ user.account_updated_at }}</li>
-    </ul>
+<h1>{{ user.name }}</h1>
+<ul>
+  <li>login: {{ user.login }}</li>
+  <li>
+    profile link: <a href="{{ user.html_url }}">{{ user.html_url }}</a>
+  </li>
+  <li>
+    api url: <a href="{{ user.api_url }}">{{ user.api_url }}</a>
+  </li>
+  <li>blog: {{ user.blog }}</li>
+  <li>bio: {{ user.bio }}</li>
+  {% if user.company %}
+  <li>company: {{ user.company }}</li>
+  {% endif %} {% if user.location %}
+  <li>location: {{ user.location }}</li>
+  {% endif %}
+  <li>followers: {{ user.followers }}</li>
+  <li>following: {{ user.following }}</li>
+  <li>public_gists: {{ user.public_gists }}</li>
+  <li>public_repos: {{ user.public_repos }}</li>
+  <li>account_created_at: {{ user.account_created_at }}</li>
+  <li>account_updated_at: {{ user.account_updated_at }}</li>
+</ul>
 {% else %}
-    <p>No user data available.</p>
+<p>No user data available.</p>
 {% endif %}
