@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
-# import django_heroku
 import dj_database_url
 
 from .env_config import (
@@ -26,7 +25,6 @@ from .env_config import (
 
 print("ENVIRONMENT: ", ENVIRONMENT)
 print("DATABASE_NAME: ", DATABASE_NAME)
-# print("DATABASE_USER: ", DATABASE_USER)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -41,7 +39,6 @@ SECRET_KEY = SECRET or "t$9dbe)=o9$x06l&6(yhp4d3a!2)cmpjsnz0dy!9hm!%9p!*zc"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-# not IS_PROD
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "django-github-api.herokuapp.com"]
 
@@ -95,15 +92,13 @@ WSGI_APPLICATION = "github_api.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "django_github_api",  # DATABASE_NAME,
-        "USER": "nick",  # DATABASE_USER,
+        "NAME": "django_github_api",
+        "USER": "nick",
         "PASSWORD": "",
         "HOST": "127.0.0.1",
         "PORT": "5432",
     }
 }
-
-# DATABASES = {"default": {"ENGINE": "django.db.backends.postgresql"}}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -142,10 +137,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 database_url = DATABASE_NAME or ""
 if IS_PROD:
     DATABASES = {"default": dj_database_url.parse(database_url)}
-    DATABASES["default"][
-        "ENGINE"
-    ] = "django.db.backends.postgresql"  # postgresql_psycopg2'
-# engine = SCHEMES[url.scheme] if engine is None else engine
+    DATABASES["default"]["ENGINE"] = "django.db.backends.postgresql"
 
 # try to load local_settings.py if it exists
 try:
