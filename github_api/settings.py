@@ -11,11 +11,13 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-import django_heroku
+
+# import django_heroku
+import dj_database_url
 
 from .env_config import (
     ENVIRONMENT,
-    # DATABASE_NAME,
+    DATABASE_NAME,
     # DATABASE_PASSWORD,
     # DATABASE_USER,
     IS_PROD,
@@ -23,7 +25,7 @@ from .env_config import (
 )
 
 print("ENVIRONMENT: ", ENVIRONMENT)
-# print("DATABASE_NAME: ", DATABASE_NAME)
+print("DATABASE_NAME: ", DATABASE_NAME)
 # print("DATABASE_USER: ", DATABASE_USER)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -38,7 +40,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = SECRET or "t$9dbe)=o9$x06l&6(yhp4d3a!2)cmpjsnz0dy!9hm!%9p!*zc"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True  # not IS_PROD
+DEBUG = False
+# not IS_PROD
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "django-github-api.herokuapp.com"]
 
@@ -100,6 +103,8 @@ DATABASES = {
     }
 }
 
+DATABASES = {"default": {"ENGINE": "django.db.backends.postgresql"}}
+
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
@@ -134,4 +139,12 @@ STATIC_URL = "/static/"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-django_heroku.settings(locals())
+if DATABASE_NAME:
+    DATABASES = {"default": dj_database_url.parse(url=DATABASE_NAME, engine="postgres")}
+
+# try to load local_settings.py if it exists
+try:
+    from .local_settings import *
+except Exception as e:
+    pass
+
