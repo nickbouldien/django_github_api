@@ -11,6 +11,20 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import django_heroku
+
+from .env_config import (
+    ENVIRONMENT,
+    DATABASE_NAME,
+    DATABASE_PASSWORD,
+    DATABASE_USER,
+    IS_PROD,
+    SECRET,
+)
+
+print("ENVIRONMENT: ", ENVIRONMENT)
+print("DATABASE_NAME: ", DATABASE_NAME)
+print("DATABASE_USER: ", DATABASE_USER)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,12 +35,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "t$9dbe)=o9$x06l&6(yhp4d3a!2)cmpjsnz0dy!9hm!%9p!*zc"
+SECRET_KEY = SECRET or "t$9dbe)=o9$x06l&6(yhp4d3a!2)cmpjsnz0dy!9hm!%9p!*zc"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True  # not IS_PROD
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "django-github-api.herokuapp.com"]
 
 
 # Application definition
@@ -78,9 +92,9 @@ WSGI_APPLICATION = "github_api.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "django_github_api",
-        "USER": "nick",
-        "PASSWORD": "",
+        "NAME": DATABASE_NAME,
+        "USER": DATABASE_USER,
+        "PASSWORD": DATABASE_PASSWORD,
         "HOST": "127.0.0.1",
         "PORT": "5432",
     }
@@ -119,3 +133,5 @@ USE_TZ = True
 STATIC_URL = "/static/"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+django_heroku.settings(locals())
