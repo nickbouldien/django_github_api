@@ -13,6 +13,6 @@ DATABASE_NAME = os.getenv("LOCAL_DATABASE_NAME")
 # override for prod
 if IS_PROD:
     SECRET = os.getenv("SECRET")
-    DATABASE_NAME = os.environ("DATABASE_URL")  # os.getenv("DATABASE_NAME")
+    DATABASE_NAME = os.environ.get("DATABASE_URL")  # os.getenv("DATABASE_NAME")
     # DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD")
     # DATABASE_USER = os.getenv("DATABASE_USER")
