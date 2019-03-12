@@ -103,7 +103,7 @@ DATABASES = {
     }
 }
 
-DATABASES = {"default": {"ENGINE": "django.db.backends.postgresql"}}
+# DATABASES = {"default": {"ENGINE": "django.db.backends.postgresql"}}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -139,8 +139,13 @@ STATIC_URL = "/static/"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-if DATABASE_NAME:
-    DATABASES = {"default": dj_database_url.parse(url=DATABASE_NAME, engine="postgres")}
+database_url = DATABASE_NAME or ""
+if IS_PROD:
+    DATABASES = {"default": dj_database_url.parse(database_url)}
+    DATABASES["default"][
+        "ENGINE"
+    ] = "django.db.backends.postgresql"  # postgresql_psycopg2'
+# engine = SCHEMES[url.scheme] if engine is None else engine
 
 # try to load local_settings.py if it exists
 try:
