@@ -15,16 +15,16 @@ import django_heroku
 
 from .env_config import (
     ENVIRONMENT,
-    DATABASE_NAME,
-    DATABASE_PASSWORD,
-    DATABASE_USER,
+    # DATABASE_NAME,
+    # DATABASE_PASSWORD,
+    # DATABASE_USER,
     IS_PROD,
     SECRET,
 )
 
 print("ENVIRONMENT: ", ENVIRONMENT)
-print("DATABASE_NAME: ", DATABASE_NAME)
-print("DATABASE_USER: ", DATABASE_USER)
+# print("DATABASE_NAME: ", DATABASE_NAME)
+# print("DATABASE_USER: ", DATABASE_USER)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -92,9 +92,9 @@ WSGI_APPLICATION = "github_api.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": DATABASE_NAME,
-        "USER": DATABASE_USER,
-        "PASSWORD": DATABASE_PASSWORD,
+        "NAME": "django_github_api",  # DATABASE_NAME,
+        "USER": "nick",  # DATABASE_USER,
+        "PASSWORD": "",
         "HOST": "127.0.0.1",
         "PORT": "5432",
     }
