@@ -17,7 +17,7 @@ def index(request):
         "/api/ping": "test availability",
         "/api/user/<github_username>/": "get github data for a given user",
         "/api/user<github_username>/repos": "get github repo data for a given user",
-        "/api/user<github_username>/repos": "get github repo trends for a given user",
+        "/api/user<github_username>/trends": "get github repo trends for a given user",
     }
     return JsonResponse(routes)
 
@@ -34,7 +34,6 @@ def user_repos(request, username):
     url = "https://api.github.com/users/" + username + "/repos"
     headers = {"Accept": "application/vnd.github.v3+json"}
     r = requests.get(url, headers=headers)
-    print(r.status_code)
 
     return JsonResponse(r.json(), safe=False)
 
@@ -91,7 +90,7 @@ def user(request, username):
 
 
 def user_trends(request, username):
-    amount_param = request.GET.get("amount", 10)
+    amount_param = request.GET.get("amount", 30)  # defaulting to 30 for a month
 
     json_res = []
 
