@@ -1,0 +1,9 @@
+{% for user in user_data %}
+<h1>{{ user.login }} {{ user.id }}</h1>
+<ul>
+  <li>followers: {{ user.followers }}</li>
+  <li>following: {{ user.following }}</li>
+  <li>public_gists: {{ user.public_gists }}</li>
+  <li>public_repos: {{ user.public_repos }}</li>
+</ul>
+{% endfor %}

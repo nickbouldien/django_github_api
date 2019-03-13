@@ -9,6 +9,7 @@ from django.http import (
 from .models import User
 import requests
 import json
+from .utils.math_utils import safe_div
 
 
 def index(request):
@@ -89,8 +90,51 @@ def user(request, username):
     return render(request, "gh_api/user.html", user)
 
 
-def user_trends(request, username):
+def user_stats(request, username):
+    if request.method != "GET":
+        return HttpResponseNotAllowed(["GET"])
+
+    json_param = request.GET.get("json", False)
+    render_json = json_param == "true" or json_param == "1"
+
     amount_param = request.GET.get("amount", 30)  # defaulting to 30 for a month
+    user_entries = User.objects.filter(login=username)[: int(amount_param)]
+
+    followers = 0
+    following = 0
+    public_gists = 0
+    public_repos = 0
+
+    amount = len(user_entries)
+
+    for entry in user_entries:
+        followers += entry.followers
+        following += entry.following
+        public_gists += entry.public_gists
+        public_repos += entry.public_repos
+
+    user_data = {
+        "login": username,
+        "followers": safe_div(followers, amount),
+        "following": safe_div(following, amount),
+        "public_gists": safe_div(public_gists, amount),
+        "public_repos": safe_div(public_repos, amount),
+    }
+
+    if render_json:
+        return JsonResponse(user_data)
+
+    return render(request, "gh_api/stats.html", user_data)
+
+
+def user_trends(request, username):
+    if request.method != "GET":
+        return HttpResponseNotAllowed(["GET"])
+
+    json_param = request.GET.get("json", False)
+    amount_param = request.GET.get("amount", 30)  # defaulting to 30 for a month
+
+    render_json = json_param == "true" or json_param == "1"
 
     json_res = []
 
@@ -112,4 +156,7 @@ def user_trends(request, username):
         )
         json_res.append(json_obj)
 
-    return JsonResponse(json_res, safe=False)
+    if render_json:
+        return JsonResponse(json_res, safe=False)
+
+    return render(request, "gh_api/trends.html", {"user_data": json_res})
