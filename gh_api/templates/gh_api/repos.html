@@ -1,0 +1,22 @@
+{% for repo in repos %}
+<h1>{{ repo.name }}</h1>
+<ul>
+  <li>owner login: {{ repo.owner.login }} {{ repo.owner.id }}</li>
+  <li>repo id: {{ repo.id }}</li>
+  <li>
+    owner url: <a href="{{ repo.owner.html_url }}">{{ repo.owner.html_url }}</a>
+  </li>
+  <li>archived: {{ repo.archived }}</li>
+  <li>description: {{ repo.description }}</li>
+  <li>forks: {{ repo.forks }}</li>
+  <li>forks_count: {{ repo.forks_count }}</li>
+  <li>open_issues: {{ repo.open_issues }}</li>
+  <li>open_issues_count: {{ repo.open_issues_count }}</li>
+  <li>
+    repo url: <a href="{{ repo.html_url }}">{{ repo.html_url }}</a>
+  </li>
+  <li>stargazers_count: {{ repo.stargazers_count }}</li>
+  <li>watchers: {{ repo.watchers }}</li>
+  <li>watchers_count: {{ repo.watchers_count }}</li>
+</ul>
+{% endfor %}

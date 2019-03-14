@@ -6,39 +6,35 @@ from django.http import (
     HttpResponseNotAllowed,
     HttpResponseServerError,
 )
-from .models import User
 import requests
 import json
+from .models import User
 from .utils.math_utils import safe_div
+
+# TODO - GET /users/:username/starred
 
 
 def index(request):
-    routes = {
-        "/api/": "'help' - shows available routes",
-        "/api/ping": "test availability",
-        "/api/user/<github_username>/": "get github data for a given user",
-        "/api/user<github_username>/repos": "get github repo data for a given user",
-        "/api/user<github_username>/trends": "get github repo trends for a given user",
-    }
-    return JsonResponse(routes)
-
-
-def test(request):
-    return HttpResponse("pong")
-
-
-# github api # https://developer.github.com/v3/
-def user_repos(request, username):
     if request.method != "GET":
         return HttpResponseNotAllowed(["GET"])
 
-    url = "https://api.github.com/users/" + username + "/repos"
-    headers = {"Accept": "application/vnd.github.v3+json"}
-    r = requests.get(url, headers=headers)
+    json_param = request.GET.get("json", False)
+    render_json = json_param == "true" or json_param == "1"
 
-    return JsonResponse(r.json(), safe=False)
+    routes = {
+        "/": "'help' - shows available routes",
+        "/user/<github_username>/": "get github data for a given user",
+        "/user<github_username>/repos": "get github repo data for a given user",
+        "/user<github_username>/stats": "get github stats for a given user",
+        "/user<github_username>/trends": "get github repo trends for a given user",
+    }
+    if render_json:
+        return JsonResponse(routes)
+
+    return render(request, "gh_api/index.html", {"routes": routes})
 
 
+# github api # https://developer.github.com/v3/
 def user(request, username):
     if request.method != "GET":
         return HttpResponseNotAllowed(["GET"])
@@ -88,6 +84,43 @@ def user(request, username):
         return JsonResponse(user)
 
     return render(request, "gh_api/user.html", user)
+
+
+def user_repos(request, username):
+    if request.method != "GET":
+        return HttpResponseNotAllowed(["GET"])
+
+    json_param = request.GET.get("json", False)
+    render_json = json_param == "true" or json_param == "1"
+
+    url = "https://api.github.com/users/" + username + "/repos"
+    headers = {"Accept": "application/vnd.github.v3+json"}
+    r = requests.get(url, headers=headers)
+
+    repos = []
+
+    for repo in r.json():
+        repo_obj = dict(
+            id=repo["id"],
+            name=repo["name"],
+            archived=repo["archived"],
+            description=repo["description"],
+            forks=repo["forks"],
+            forks_count=repo["forks_count"],
+            html_url=repo["html_url"],
+            open_issues=repo["open_issues"],
+            open_issues_count=repo["open_issues_count"],
+            owner=repo["owner"],
+            stargazers_count=repo["stargazers_count"],
+            watchers=repo["watchers"],
+            watchers_count=repo["watchers_count"],
+        )
+        repos.append(repo_obj)
+
+    if render_json:
+        return JsonResponse({"repos": repos})
+
+    return render(request, "gh_api/repos.html", {"repos": repos})
 
 
 def user_stats(request, username):
