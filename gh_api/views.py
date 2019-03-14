@@ -29,7 +29,7 @@ def index(request):
         "/user<github_username>/trends": "get github repo trends for a given user",
     }
     if render_json:
-        return JsonResponse(routes)
+        return JsonResponse({"routes": routes})
 
     return render(request, "gh_api/index.html", {"routes": routes})
 
@@ -74,16 +74,14 @@ def user(request, username):
             "There was an error with the response from the github api."
         )
 
-    user = {"user": user_data}
-
     if save_data:
         created_user = User.objects.create(**user_data)
         print("created_user: ", created_user)
 
     if render_json:
-        return JsonResponse(user)
+        return JsonResponse({"user": user_data})
 
-    return render(request, "gh_api/user.html", user)
+    return render(request, "gh_api/user.html", {"user": user_data})
 
 
 def user_repos(request, username):
@@ -99,23 +97,28 @@ def user_repos(request, username):
 
     repos = []
 
-    for repo in r.json():
-        repo_obj = dict(
-            id=repo["id"],
-            name=repo["name"],
-            archived=repo["archived"],
-            description=repo["description"],
-            forks=repo["forks"],
-            forks_count=repo["forks_count"],
-            html_url=repo["html_url"],
-            open_issues=repo["open_issues"],
-            open_issues_count=repo["open_issues_count"],
-            owner=repo["owner"],
-            stargazers_count=repo["stargazers_count"],
-            watchers=repo["watchers"],
-            watchers_count=repo["watchers_count"],
+    if r.status_code == requests.codes.ok:
+        for repo in r.json():
+            repo_obj = dict(
+                id=repo["id"],
+                name=repo["name"],
+                archived=repo["archived"],
+                description=repo["description"],
+                forks=repo["forks"],
+                forks_count=repo["forks_count"],
+                html_url=repo["html_url"],
+                open_issues=repo["open_issues"],
+                open_issues_count=repo["open_issues_count"],
+                owner=repo["owner"],
+                stargazers_count=repo["stargazers_count"],
+                watchers=repo["watchers"],
+                watchers_count=repo["watchers_count"],
+            )
+            repos.append(repo_obj)
+    else:
+        return HttpResponseServerError(
+            "There was an error with the response from the github api."
         )
-        repos.append(repo_obj)
 
     if render_json:
         return JsonResponse({"repos": repos})
@@ -155,9 +158,9 @@ def user_stats(request, username):
     }
 
     if render_json:
-        return JsonResponse(user_data)
+        return JsonResponse({"user_data": user_data})
 
-    return render(request, "gh_api/stats.html", user_data)
+    return render(request, "gh_api/stats.html", {"user_data": user_data})
 
 
 def user_trends(request, username):
@@ -169,13 +172,13 @@ def user_trends(request, username):
 
     render_json = json_param == "true" or json_param == "1"
 
-    json_res = []
+    user_data = []
 
     user_entries = User.objects.filter(login=username).order_by("-id")[
         : int(amount_param)
     ]
     for entry in user_entries:
-        json_obj = dict(
+        user_obj = dict(
             id=entry.id,
             company=entry.company,
             location=entry.location,
@@ -187,9 +190,9 @@ def user_trends(request, username):
             created_date=entry.created_date,
             account_updated_at=entry.account_updated_at,
         )
-        json_res.append(json_obj)
+        user_data.append(user_obj)
 
     if render_json:
-        return JsonResponse(json_res, safe=False)
+        return JsonResponse({"user_data": user_data})
 
-    return render(request, "gh_api/trends.html", {"user_data": json_res})
+    return render(request, "gh_api/trends.html", {"user_data": user_data})
