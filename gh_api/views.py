@@ -6,6 +6,7 @@ from django.http import (
     HttpResponseNotAllowed,
     HttpResponseServerError,
 )
+from django.views.decorators.http import require_http_methods, require_GET
 import requests
 import json
 from .models import User
@@ -14,10 +15,8 @@ from .utils.math_utils import safe_div
 # TODO - GET /users/:username/starred
 
 
+@require_GET
 def index(request):
-    if request.method != "GET":
-        return HttpResponseNotAllowed(["GET"])
-
     json_param = request.GET.get("json", False)
     render_json = json_param == "true" or json_param == "1"
 
@@ -35,10 +34,8 @@ def index(request):
 
 
 # github api # https://developer.github.com/v3/
+@require_GET
 def user(request, username):
-    if request.method != "GET":
-        return HttpResponseNotAllowed(["GET"])
-
     save_param = request.GET.get("save", False)
     json_param = request.GET.get("json", False)
 
@@ -84,10 +81,8 @@ def user(request, username):
     return render(request, "gh_api/user.html", {"user": user_data})
 
 
+@require_GET
 def user_repos(request, username):
-    if request.method != "GET":
-        return HttpResponseNotAllowed(["GET"])
-
     json_param = request.GET.get("json", False)
     render_json = json_param == "true" or json_param == "1"
 
@@ -126,10 +121,8 @@ def user_repos(request, username):
     return render(request, "gh_api/repos.html", {"repos": repos})
 
 
+@require_GET
 def user_stats(request, username):
-    if request.method != "GET":
-        return HttpResponseNotAllowed(["GET"])
-
     json_param = request.GET.get("json", False)
     render_json = json_param == "true" or json_param == "1"
 
@@ -163,10 +156,8 @@ def user_stats(request, username):
     return render(request, "gh_api/stats.html", {"user_data": user_data})
 
 
+@require_GET
 def user_trends(request, username):
-    if request.method != "GET":
-        return HttpResponseNotAllowed(["GET"])
-
     json_param = request.GET.get("json", False)
     amount_param = request.GET.get("amount", 30)  # defaulting to 30 for a month
 
