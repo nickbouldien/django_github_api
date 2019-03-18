@@ -1,14 +1,7 @@
-from django.core.serializers import serialize
 from django.shortcuts import render
-from django.http import (
-    HttpResponse,
-    JsonResponse,
-    HttpResponseNotAllowed,
-    HttpResponseServerError,
-)
-from django.views.decorators.http import require_http_methods, require_GET
+from django.http import JsonResponse, HttpResponseServerError
+from django.views.decorators.http import require_GET
 import requests
-import json
 from .models import User
 from .utils.math_utils import safe_div
 
