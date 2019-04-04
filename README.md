@@ -1,6 +1,6 @@
 # django_github_api
 
-a super basic django app that I can hit that will save a user's github repo details (created for my blog site which is currently WIP)
+a super basic django app that has endpoints that will call the github rest api to get details about a github user or the github user's repos. can save a github user's github repo details (created for my blog site which is currently WIP)
 
 ### example request
 
@@ -18,8 +18,8 @@ below are the available endpoints (all of the below _only_ accept GET requests)
 
 ### query params
 
-there are three available query params you can add to the request url
+there are three available query params you can add to the request url (depending on the endpoint)
 
-- `json=1` or `?json=true` to return json (all endpoints)
+- `?json=1` or `?json=true` to return json (all endpoints)
 - `?save=1` or `?save=true` to save the query (only the `/api/user/<username>` endpoint. this will save the data received from the github api into the database)
 - `?amount=<number>` to return the `<amount>` of records (only on `/api/user/trends` and `/api/user/stats` endpoints). defaults to `30` (~ days in a month)
