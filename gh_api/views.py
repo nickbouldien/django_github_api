@@ -16,9 +16,9 @@ def index(request):
     routes = {
         "/": "'help' - shows available routes",
         "/user/<github_username>/": "get github data for a given user",
-        "/user<github_username>/repos": "get github repo data for a given user",
-        "/user<github_username>/stats": "get github stats for a given user",
-        "/user<github_username>/trends": "get github repo trends for a given user",
+        "/user/<github_username>/repos": "get github repo data for a given user",
+        "/user/<github_username>/stats": "get github stats for a given user",
+        "/user/<github_username>/trends": "get github repo trends for a given user",
     }
     if render_json:
         return JsonResponse({"routes": routes})
