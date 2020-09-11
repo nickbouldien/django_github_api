@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+from typing import List
 
 import dj_database_url
 
@@ -35,12 +36,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = SECRET or "t$9dbe)=o9$x06l&6(yhp4d3a!2)cmpjsnz0dy!9hm!%9p!*zc"
+SECRET_KEY: str = SECRET or "t$9dbe)=o9$x06l&6(yhp4d3a!2)cmpjsnz0dy!9hm!%9p!*zc"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "django-github-api.herokuapp.com"]
+ALLOWED_HOSTS: List[str] = ["127.0.0.1", "localhost", "django-github-api.herokuapp.com"]
 
 
 # Application definition

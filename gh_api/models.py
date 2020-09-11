@@ -20,8 +20,8 @@ class User(models.Model):
     account_updated_at = models.DateTimeField()
     created_date = models.DateTimeField(default=timezone.now)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "User('{}', '{}', '{}')".format(self.login, self.name, self.html_url)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "'{}': '{}' - '{}'".format(self.id, self.login, self.name)
