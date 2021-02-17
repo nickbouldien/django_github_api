@@ -1,12 +1,13 @@
 import os
+from typing import Optional
 
-ENVIRONMENT = os.getenv("ENVIRONMENT")
+ENVIRONMENT: Optional[str] = os.getenv("ENVIRONMENT")
 
-IS_PROD = ENVIRONMENT == "production" or ENVIRONMENT == "prod"
+IS_PROD: bool = ENVIRONMENT == "production" or ENVIRONMENT == "prod"
 
 # setup local (non-secret env vars)
-SECRET = os.getenv("LOCAL_SECRET")
-DATABASE_NAME = os.getenv("LOCAL_DATABASE_NAME")
+SECRET: Optional[str] = os.getenv("LOCAL_SECRET")
+DATABASE_NAME: Optional[str] = os.getenv("LOCAL_DATABASE_NAME")
 
 
 # override for prod

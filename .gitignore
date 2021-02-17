@@ -1,5 +1,9 @@
 # source - https://www.codingforentrepreneurs.com/blog/django-virtualenv-python-gitignore-file/
 
+# code editor specific settings
+.vscode
+.idea
+
 .DS_STORE
 
 # sqlite
@@ -114,4 +118,3 @@ ENV/
 
 # mypy
 .mypy_cache/
-

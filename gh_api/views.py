@@ -1,3 +1,4 @@
+from django.core.handlers.wsgi import WSGIRequest
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponseServerError
 from django.views.decorators.http import require_GET
@@ -28,7 +29,7 @@ def index(request):
 
 # github api # https://developer.github.com/v3/
 @require_GET
-def user(request, username):
+def user(request: WSGIRequest, username: str):
     save_param = request.GET.get("save", False)
     json_param = request.GET.get("json", False)
 
